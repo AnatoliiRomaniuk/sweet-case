@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # 1. Наш Слоник (База даних)
+  db:
+    image: postgres:15-alpine
+    container_name: sweet_db
+    restart: always
+    environment:
+      POSTGRES_USER: rt_admin
+      POSTGRES_PASSWORD: 16bOzOn48  # Змініть на свій
+      POSTGRES_DB: sweet_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Наш Python (Backend)
+  backend:
+    build: ./backend
+    container_name: sweet_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./uploads:/app/uploads
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://rt_admin:16bOzOn48@db/sweet_db
+
+  # 3. Наш Сайт (Frontend)
+  frontend:
+    build: ./frontend
+    container_name: sweet_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/usr/share/nginx/html/
+
+volumes:
+  postgres_data:
