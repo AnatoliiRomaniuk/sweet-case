@@ -5,7 +5,10 @@ from pydantic import BaseModel, Field
 from database import create_tables, save_order
 from telegram_utils import send_telegram_msg
 
+
+
 app = FastAPI()
+
 
 # Дозволяємо фронтенду (8080) спілкуватися з бекендом (8000)
 app.add_middleware(
