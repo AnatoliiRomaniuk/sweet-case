@@ -10,7 +10,7 @@ async function sendOrder() {
     };
 
     try {
-        const response = await fetch('http://localhost:8000/submit_order', {
+        const response = await fetch('http://192.168.0.109:8000/submit_order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

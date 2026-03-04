@@ -1,42 +1,36 @@
-version: '3.8'
-
 services:
-  # 1. Наш Слоник (База даних)
   db:
     image: postgres:15-alpine
-    container_name: sweet_db
+    container_name: sweet_case_db
     restart: always
     environment:
-      POSTGRES_USER: rt_admin
-      POSTGRES_PASSWORD: 16bOzOn48  # Змініть на свій
-      POSTGRES_DB: sweet_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: sweet_case
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # 2. Наш Python (Backend)
   backend:
     build: ./backend
-    container_name: sweet_backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/app
-      - ./uploads:/app/uploads
+    container_name: sweet_case_backend
+    restart: always
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: postgresql://rt_admin:16bOzOn48@db/sweet_db
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/sweet_case
+    ports:
+      - "8000:8000"
 
-  # 3. Наш Сайт (Frontend)
   frontend:
     build: ./frontend
-    container_name: sweet_frontend
+    container_name: sweet_case_frontend
+    restart: always
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/usr/share/nginx/html/
 
 volumes:
   postgres_data:
