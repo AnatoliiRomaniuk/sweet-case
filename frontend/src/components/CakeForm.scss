@@ -1,0 +1,85 @@
+// src/components/CakeForm.scss
+
+// Це правило гарантує, що поля не будуть ширшими, ніж ми вказали
+* {
+  box-sizing: border-box; 
+}
+
+.app-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  padding: 40px;
+  background-color: #fff1f2;
+  min-height: 100vh;
+}
+
+.card-container {
+  width: 380px; // Фіксована ширина для стабільності
+  background: white;
+  padding: 25px;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+
+  .title {
+    color: #d946ef;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; // Рівно навпіл
+    gap: 12px; // Збільшимо відступ між полями, щоб вони не злипалися
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .input-field, select {
+    width: 100%; // Тепер 100% означає 100% від половинки рядка
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #f3f4f6;
+    border-radius: 10px;
+    font-size: 14px;
+    background: #fcfcfc;
+    appearance: none; // Прибирає стандартні стрілки браузера, що додають ширину
+
+    &:focus {
+      border-color: #d946ef;
+      outline: none;
+      background: white;
+    }
+  }
+
+  // Спеціальний стиль для випадаючих списків, щоб текст не налізав на край
+  select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 30px;
+  }
+
+  .price-box {
+    margin: 15px 0;
+    padding: 15px;
+    border: 1px dashed #d946ef;
+    border-radius: 15px;
+    text-align: center;
+    color: #d946ef;
+    font-weight: bold;
+    background: #fdf2f8;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #d946ef;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
