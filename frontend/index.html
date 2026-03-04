@@ -7,17 +7,70 @@
    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
 <div class="order-form">
     <h2>🎂 Замовити тортик</h2>
+    
     <input type="text" id="name" placeholder="Ваше ім'я" required>
-    <select id="cake">
+    <input type="tel" id="phone" placeholder="Номер телефону" required>
+
+    <input type="number" id="weight" placeholder="Оберіть вагу (кг)" step="0.1" min="0.5" oninput="calculatePrice()">
+    
+    <label for="cake">Оберіть основу:</label>
+    <select id="cake" onchange="updateForm()">
         <option value="Наполеон">Наполеон</option>
-        <option value="Київський">Київський</option>
         <option value="Медовик">Медовик</option>
+        <option value="Бісквіт">Бісквіт</option>
     </select>
-    <input type="number" id="weight" placeholder="Вага (кг)" step="0.5" min="0.5">
-    <button onclick="sendOrder()">Відправити замовлення</button>
-    <script src="js/scripts.js"></script>
+
+<div id="biscuit-section" class="hidden-section">
+    <div class="option-row">
+        <label for="biscuit-type">Тип бісквіта:</label>
+        <select id="biscuit-type">
+            <option value="білий">Білий</option>
+            <option value="шоколадний">Шоколадний</option>
+        </select>
+    </div>
+
+    <div class="option-row">
+        <label for="filling">Начинка:</label>
+        <select id="filling">
+            <option value="снікерс">Снікерс</option>
+            <option value="груша-карамель">Груша-карамель</option>
+        </select>
+    </div>
 </div>
+
+    <label for="coating">Покриття:</label>
+    <select id="coating">
+        <option value="шоколад">Шоколад</option>
+        <option value="мастика">Мастика</option>
+    </select>
+
+    <label for="delivery">Спосіб доставки:</label>
+    <select id="delivery" onchange="toggleDeliveryFields()">
+        <option value="самовивіз">Самовивіз</option>
+        <option value="нова пошта">Нова Пошта</option>
+        <option value="адресна">Адресна доставка</option>
+    </select>
+
+    <div id="np-section" class="hidden-section">
+        <input type="text" id="np-city" placeholder="Населений пункт">
+        <input type="text" id="np-office" placeholder="№ відділення">
+    </div>
+
+    <div id="address-section" class="hidden-section">
+        <input type="text" id="address" placeholder="Вулиця, будинок, квартира">
+    </div>
+
+    <div class="price-display">
+        Вартість замовлення: <span id="total-price">0</span> грн
+    </div>
+
+    <button onclick="sendOrder()">Відправити замовлення</button>
+</div>
+
+    <script src="js/scripts.js"></script>
+
 </body>
 </html>

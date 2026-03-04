@@ -1,20 +1,87 @@
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background: #fff5f8; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
-    margin: 0; 
+/* Рядок з параметром */
+.option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Розносимо підпис і поле по краях */
+    flex-wrap: wrap; /* Для мобільних пристроїв */
+    gap: 10px;
+    width: 100%;
 }
-.order-form { 
-    background: white; 
-    padding: 30px; 
-    border-radius: 15px; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
-    width: 350px; 
+
+/* Налаштування для підписів у рядку */
+.option-row label {
+    min-width: 110px; /* Однаковий відступ для всіх підписів, щоб поля починалися з однієї лінії */
+    font-size: 14px;
+    margin-bottom: 0; /* Прибираємо відступи, бо тепер ми у флексі */
 }
-h2 { color: #d63384; text-align: center; }
-input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-button { width: 100%; padding: 12px; background: #d63384; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-button:hover { background: #b82a6e; }
+
+/* Налаштування для випадаючих списків у рядку */
+.option-row select {
+    flex-grow: 1; /* Поле розтягується на всю ширину, що залишилася */
+}
+
+/* Прихована секція з налаштуваннями */
+.hidden-section {
+    display: none; /* Керується через JS */
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    background-color: #fdf2f8; /* Ніжно-рожевий фон під стиль бренду */
+    border-left: 4px solid #d946ef; /* Яскрава лінія зліва */
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.order-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #ff6b6b;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Клас для підсвітки помилки */
+.error {
+    border: 2px solid #ff4d4d !important; /* Яскраво-червоний колір */
+    background-color: #fff5f5; /* Ледь помітний рожевий фон */
+}
+
+/* Додамо стилі для повідомлення про помилку (опціонально) */
+.error-message {
+    color: #ff4d4d;
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 5px;
+}
+
+/* Стиль для тексту помилки */
+.error-text {
+    color: #ff4d4d;
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 5px;
+    display: none; /* Спочатку приховано */
+}
+
+/* Коли поле має помилку, показуємо наступний за ним текст */
+.error + .error-text {
+    display: block;
+}

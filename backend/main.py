@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 from database import create_tables, save_order
 from telegram_utils import send_telegram_msg
-
+from typing import Dict, Any, Optional
 
 
 app = FastAPI()
@@ -22,22 +22,24 @@ app.add_middleware(
 create_tables()
 
 class OrderCreate(BaseModel):
-    customer_name: str = Field(..., min_length=2)
-    cake_type : str
-    weight : float = Field(..., gt=0)
+    customer_name: str
+    phone: str
+    cake_type: str
+    weight: float
+    delivery_method: str
+    details: Dict[str, Any] = {}
 
 @app.post("/submit_order")
-def submit_order(order: OrderCreate):
-    try:
-        # Використовуємо функції з інших файлів
-        new_id = save_order(order.customer_name, order.cake_type, order.weight)
-        send_telegram_msg(order.customer_name, order.cake_type, order.weight)
-
-        return {
-            "status": "success", 
-            "order_id": new_id, 
-            "message": "Дякуємо! Замовлення прийнято."
-        }
-    except Exception as e:
-        print(f"General error: {e}")
-        return {"status": "error", "message": "Щось пішло не так"}
+async def handle_order(order: OrderCreate):
+    order_dict = order.model_dump()
+    send_telegram_msg(order_dict)
+    
+    # Отримуємо ID, який повернула база
+    order_id = save_order(order_dict)
+    
+    # Додаємо ID до словника, щоб він теж пішов у Телеграм (за бажанням)
+    order_dict["id"] = order_id
+    
+    send_telegram_msg(order_dict)
+    
+    return {"message": "Замовлення отримано!", "order_id": order_id}
