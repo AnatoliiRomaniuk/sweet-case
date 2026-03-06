@@ -1,39 +1,99 @@
-#  Sweet Case: Telegram Notification System
+# Sweet Case — Telegram Notification System
 
-**Sweet Case** — це система сповіщень, яка дозволяє збирати дані через API та оперативно відправляти їх користувачам у Telegram.
-Проєкт створено для автоматизації рутинних процесів, а саме отримання повної інформації щодо замовлення солодощів у кондитера.
-Проєкт перебуває на початковій стадії розробки, тому не всі задуми реалізовані.
+**Sweet Case** — це веб-додаток для збору інформації про замовлення та надсилання сповіщень користувачам через Telegram-бота.
 
----
+Проєкт створений як **pet-project** для практики розробки backend-сервісів, контейнеризації та розгортання додатків у Linux середовищі.
 
-##  Технологічний стек
-* **Backend:** FastAPI (Python 3.x)
-* **Frontend:** React.js
-* **Database:** PostgreSQL
-* **Infrastructure:** Docker & Docker Compose
-* **Messaging:** Telegram Bot API
+⚠️ Проєкт перебуває на початковій стадії розробки, тому деякі функції ще можуть бути не реалізовані.
 
 ---
 
-##  Основні можливості
-*  Надсилання миттєвих сповіщень через Telegram-бота.
-*  Веб-інтерфейс на React для керування налаштуваннями.
-*  Повна контейнеризація всіх компонентів для швидкого розгортання.
-*  Збереження історії замовлень у базі даних PostgreSQL.
+## Technologies
+
+- **Backend:** FastAPI (Python)
+- **Frontend:** React
+- **Database:** PostgreSQL
+- **Infrastructure:** Docker, Docker Compose
+- **Reverse Proxy:** Nginx
+- **Messaging:** Telegram Bot API
 
 ---
 
-## Як запустити (Quick Start)
+## Features
 
-### 1. Клонуйте репозиторій
+- надсилання сповіщень через Telegram-бота  
+- веб-інтерфейс для керування замовленнями  
+- збереження історії замовлень у PostgreSQL  
+- повна контейнеризація сервісів за допомогою Docker  
+- запуск усіх компонентів через Docker Compose  
+
+---
+
+## Project Structure
+
+```
+sweet-case
+│
+├── backend/          # FastAPI backend
+├── frontend/         # React frontend
+├── nginx.conf        # reverse proxy configuration
+├── docker-compose.yml
+├── uploads/
+└── README.md
+```
+
+---
+
+## Quick Start
+
+### 1. Clone repository
+
 ```bash
-git clone [https://github.com/AnatoliiRomaniuk/sweet-case.git]
-
+git clone https://github.com/AnatoliiRomaniuk/sweet-case.git
 cd sweet-case
-docker-compose up -d --build
+```
 
-Після запуску сервіси будуть доступні за адресами:
+### 2. Configure environment variables
 
-    Frontend: http://localhost:5173
+Створіть файл `.env` на основі прикладу:
 
-Щоб отримувати сповіщення про замовлення в телеграм бот, записати у файл .env ваші значення змінних.
+```bash
+cp .env.example .env
+```
+
+Додайте необхідні значення змінних, зокрема для Telegram-бота.
+
+### 3. Run containers
+
+```bash
+docker compose up -d --build
+```
+
+---
+
+## Access
+
+Після запуску сервіс буде доступний:
+
+Frontend  
+```
+http://localhost:5173
+```
+
+API documentation (FastAPI Swagger)  
+```
+http://localhost:8000/docs
+```
+
+---
+
+## Purpose of the project
+
+Цей проєкт створений для практики:
+
+- Linux-адміністрування  
+- контейнеризації з Docker  
+- роботи з FastAPI  
+- інтеграції PostgreSQL  
+- розгортання веб-сервісів
+
