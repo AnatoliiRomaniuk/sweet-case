@@ -1,6 +1,13 @@
-.venv/
+# Тимчасові файли Python
 __pycache__/
 *.pyc
-uploads/
-.DS_Store
+.venv/
 .env
+
+# Файли React/Node
+node_modules/
+build/
+.eslintcache
+
+# Docker & DB
+.db_data/
