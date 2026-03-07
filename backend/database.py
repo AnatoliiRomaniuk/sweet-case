@@ -4,12 +4,11 @@ import time
 from psycopg2.extensions import connection
 import json
 
-DB_URL = os.getenv("DATABASE_URL")
-
 def connect_to_db() -> connection:
     while True:
         try:
-            conn = psycopg2.connect(DB_URL)
+            db_url = os.getenv("DATABASE_URL")
+            conn = psycopg2.connect(db_url)
             return conn
         except Exception as e:
             print(f"Database not ready... error: {e}")
@@ -18,7 +17,6 @@ def connect_to_db() -> connection:
 def create_tables():
     conn = connect_to_db()
     cur = conn.cursor()
-    # Додаємо phone та details (JSONB)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS orders (
             id SERIAL PRIMARY KEY,
@@ -41,16 +39,24 @@ def save_order(order_data: dict):
     try:
         cur.execute(
             """
-            INSERT INTO orders (customer_name, phone, cake_type, weight, delivery_method, details) 
-            VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;
+            INSERT INTO orders (
+                customer_name,
+                phone,
+                cake_type,
+                weight,
+                delivery_method,
+                details
+            )
+            VALUES (%s, %s, %s, %s, %s, %s)
+            RETURNING id;
             """,
             (
-                order_data['customer_name'],
-                order_data['phone'],
-                order_data['cake_type'],
-                order_data['weight'],
-                order_data['delivery_method'],
-                json.dumps(order_data['details']) # Перетворюємо словник у рядок JSON для бази
+                order_data["customer_name"],
+                order_data["phone"],
+                order_data["cake_type"],
+                order_data["weight"],
+                order_data["delivery_method"],
+                json.dumps(order_data["details"])
             )
         )
         new_id = cur.fetchone()[0]

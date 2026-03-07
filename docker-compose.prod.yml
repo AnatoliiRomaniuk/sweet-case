@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: sweet_case_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: sweet_case
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: sweet_case_backend
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/sweet_case
+
+  nginx:
+    image: nginx:latest
+    container_name: sweet_case_nginx
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/dist:/usr/share/nginx/html:ro
+
+volumes:
+  postgres_data:

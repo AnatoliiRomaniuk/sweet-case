@@ -1,13 +1,31 @@
-# Тимчасові файли Python
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
 .venv/
-.env
+env/
+venv/
 
-# Файли React/Node
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Node / React
 node_modules/
+dist/
 build/
 .eslintcache
 
-# Docker & DB
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
 .db_data/
+postgres_data/
