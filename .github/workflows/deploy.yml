@@ -1,0 +1,26 @@
+name: Deploy Sweet Case
+
+on:
+  push:
+    branches:
+      - main  # деплой запускатиметься при пуші в гілку main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/sweet-case
+            git pull origin main
+            docker compose down
+            docker compose up -d --build
+            docker image prune -f
