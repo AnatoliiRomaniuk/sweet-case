@@ -22,7 +22,8 @@ export default function CakeForm() {
 
   useEffect(() => {
     const prices = { 'Наполеон': 400, 'Бісквіт': 500, 'Медовик': 450 };
-    setPrice((prices[order.cake_type] || 0) * order.weight);
+    const numericWeight = parseFloat(order.weight) || 0;
+    setPrice((prices[order.cake_type] || 0) * numericWeight);
   }, [order.cake_type, order.weight]);
 
   const handleSubmit = async () => {
@@ -30,10 +31,16 @@ export default function CakeForm() {
     setLoading(true);
 
     try {
+      // Конвертуємо вагу у число перед відправкою на бекенд
+      const orderPayload = {
+        ...order,
+        weight: parseFloat(order.weight) || 1,
+      };
+
       const response = await fetch('/submit_order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(order),
+        body: JSON.stringify(orderPayload),
       });
 
       if (!response.ok) {
@@ -99,16 +106,25 @@ export default function CakeForm() {
           </select>
 
           <input
-            type="number"
-            step="0.5"
+            type="text"
+            inputMode="decimal"
+            placeholder="Вага (кг)"
             className="input-field"
             value={order.weight}
-            onChange={(e) =>
-              setOrder({
-                ...order,
-                weight: parseFloat(e.target.value) || 0,
-              })
-            }
+            onFocus={() => {
+              if (order.weight === 1 || order.weight === '1') {
+                setOrder({ ...order, weight: '' });
+              }
+            }}
+            onChange={(e) => {
+              let val = e.target.value.replace(',', '.');
+              if (/^\d*\.?\d*$/.test(val)) {
+                setOrder({
+                  ...order,
+                  weight: val,
+                });
+              }
+            }}
           />
         </div>
 
