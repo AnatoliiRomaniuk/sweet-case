@@ -6,7 +6,7 @@ export default function CakeForm() {
     customer_name: '',
     phone: '',
     cake_type: 'Наполеон',
-    weight: 1,
+    weight: '1',
     delivery_method: 'самовивіз',
     details: {
       coating: 'Крем',
@@ -22,7 +22,9 @@ export default function CakeForm() {
 
   useEffect(() => {
     const prices = { 'Наполеон': 400, 'Бісквіт': 500, 'Медовик': 450 };
-    const numericWeight = parseFloat(order.weight) || 0;
+    // Замінюємо кому на крапку для коректного розрахунку
+    const formattedWeight = String(order.weight).replace(',', '.');
+    const numericWeight = parseFloat(formattedWeight) || 0;
     setPrice((prices[order.cake_type] || 0) * numericWeight);
   }, [order.cake_type, order.weight]);
 
@@ -31,10 +33,11 @@ export default function CakeForm() {
     setLoading(true);
 
     try {
-      // Конвертуємо вагу у число перед відправкою на бекенд
+      // Конвертуємо вагу з комою/крапкою у число
+      const formattedWeight = String(order.weight).replace(',', '.');
       const orderPayload = {
         ...order,
-        weight: parseFloat(order.weight) || 1,
+        weight: parseFloat(formattedWeight) || 1,
       };
 
       const response = await fetch('/submit_order', {
@@ -54,7 +57,7 @@ export default function CakeForm() {
         customer_name: '',
         phone: '',
         cake_type: 'Наполеон',
-        weight: 1,
+        weight: '1',
         delivery_method: 'самовивіз',
         details: {
           coating: 'Крем',
@@ -106,25 +109,24 @@ export default function CakeForm() {
           </select>
 
           <input
-          type="text"
-          inputMode="decimal"
-          placeholder="Вага (кг)"
-          className="input-field"
-          value={order.weight}
-          onFocus={(e) => e.target.select()} // При натисканні на поле значення виділяється повністю
-          onChange={(e) => {
-            // Замінюємо кому на крапку
-            let val = e.target.value.replace(',', '.');
-            
-            // Дозволяємо вводити порожній рядок або дробові числа (наприклад, 1, 1.5, 0.5)
-            if (val === '' || /^\d*\.?\d*$/.test(val)) {
-              setOrder({
-                ...order,
-                weight: val,
-              });
-            }
-          }}
-        />
+            type="text"
+            inputMode="decimal"
+            placeholder="Вага (кг)"
+            className="input-field"
+            value={order.weight}
+            onFocus={(e) => e.target.select()}
+            onChange={(e) => {
+              let val = e.target.value;
+              // Дозволяємо вводити порожнє поле, цифри, кому та крапку
+              if (val === '' || /^\d*[,.]?\d*$/.test(val)) {
+                setOrder({
+                  ...order,
+                  weight: val,
+                });
+              }
+            }}
+          />
+        </div>
 
         {order.cake_type === 'Бісквіт' && (
           <div className="row">
