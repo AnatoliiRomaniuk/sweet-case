@@ -106,27 +106,25 @@ export default function CakeForm() {
           </select>
 
           <input
-            type="text"
-            inputMode="decimal"
-            placeholder="Вага (кг)"
-            className="input-field"
-            value={order.weight}
-            onFocus={() => {
-              if (order.weight === 1 || order.weight === '1') {
-                setOrder({ ...order, weight: '' });
-              }
-            }}
-            onChange={(e) => {
-              let val = e.target.value.replace(',', '.');
-              if (/^\d*\.?\d*$/.test(val)) {
-                setOrder({
-                  ...order,
-                  weight: val,
-                });
-              }
-            }}
-          />
-        </div>
+          type="text"
+          inputMode="decimal"
+          placeholder="Вага (кг)"
+          className="input-field"
+          value={order.weight}
+          onFocus={(e) => e.target.select()} // При натисканні на поле значення виділяється повністю
+          onChange={(e) => {
+            // Замінюємо кому на крапку
+            let val = e.target.value.replace(',', '.');
+            
+            // Дозволяємо вводити порожній рядок або дробові числа (наприклад, 1, 1.5, 0.5)
+            if (val === '' || /^\d*\.?\d*$/.test(val)) {
+              setOrder({
+                ...order,
+                weight: val,
+              });
+            }
+          }}
+        />
 
         {order.cake_type === 'Бісквіт' && (
           <div className="row">
