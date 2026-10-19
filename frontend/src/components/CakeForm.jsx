@@ -114,11 +114,20 @@ export default function CakeForm() {
             placeholder="Вага (кг)"
             className="input-field"
             value={order.weight}
-            onFocus={(e) => e.target.select()}
             onChange={(e) => {
               let val = e.target.value;
-              // Дозволяємо вводити порожнє поле, цифри, кому та крапку
-              if (val === '' || /^\d*[,.]?\d*$/.test(val)) {
+              
+              // Якщо поточне значення було 1 (або '1') і користувач почав щось вводити,
+              // замість "15" чи "01,5" ми автоматично замінюємо його на новий введений символ!
+              if (order.weight === 1 || order.weight === '1') {
+                // Видаляємо одиницю, залишаючи лише те, що щойно натиснули (наприклад, ',' або нову цифру)
+                val = val.replace(/^1/, '');
+              }
+
+              // Замінюємо кому на крапку для перевірки
+              let cleanVal = val.replace(',', '.');
+
+              if (cleanVal === '' || /^\d*[,.]?\d*$/.test(val)) {
                 setOrder({
                   ...order,
                   weight: val,
