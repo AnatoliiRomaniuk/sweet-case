@@ -66,3 +66,23 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Фікс для мобільних пристроїв та системної темної теми */
+input,
+select,
+textarea {
+  color: #333333 !important;
+  background-color: #ffffff !important;
+  -webkit-text-fill-color: #333333 !important; /* Фікс для Safari на iOS / Chrome на Android */
+}
+
+/* Колір списку варіантів у випадаючому меню */
+select option {
+  color: #333333 !important;
+  background-color: #ffffff !important;
+}
+
+/* Примусово фіксуємо світлу схему для елементів форми */
+form, input, select {
+  color-scheme: light !important;
+}
